@@ -1,0 +1,71 @@
+<!-- TITLE -->
+<mat-card class="mb-40">
+    <h1>Order List</h1>
+</mat-card>
+
+<!-- SEARCH FORM -->
+<mat-card>
+    
+    <div class="card-title">
+        <mat-icon>search</mat-icon>
+        Search
+    </div>
+        
+    <form name="form-search" class="container-fluid">
+
+        <div class="row">
+			
+                <div class="col-sm-6">
+                    <mat-form-field class="full-width">
+                        <input matInput type="date" placeholder="Date" [(ngModel)]="search.date" name="date" id="date">
+                    </mat-form-field>
+                </div>
+			
+                <div class="col-sm-6">
+                    <mat-form-field class="full-width">
+                        <input matInput type="text" placeholder="Total" [(ngModel)]="search.total" name="total" id="total">
+                    </mat-form-field>
+                </div>
+        </div>
+
+    </form>
+</mat-card>
+
+<!-- TABLE -->
+<table class="table table-hover mt-40">
+    <thead>
+        <tr>
+            <th>_id</th>
+            <th>date</th>
+            <th>total</th>
+            <th>Remove</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of list | search: { 'date': search.date, 'total': search.total }">
+            <td><a [routerLink]="['/orders', item._id]">{{item._id}}</a></td>
+            
+            <!-- ATTRIBUTES -->
+            
+            <td>{{item.date | date }}</td>
+            <td>{{item.total }}</td>
+            
+            <!-- DELETE BUTTON -->
+            <td>
+                <button mat-icon-button (click)="openModal(item._id, modal)" class="mt--10">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+    <div class="no-result" *ngIf="(list | search: {  'date': search.date ,  'total': search.total  }).length == 0">
+        No items found
+    </div>
+</table>
+
+<!-- BUTTON -->
+<button class="btn btn-primary pull-right mb-20" routerLink="/orders/new" mat-fab color="primary">
+    <mat-icon>add</mat-icon>
+</button>
+
+<div class="clearfix"></div>

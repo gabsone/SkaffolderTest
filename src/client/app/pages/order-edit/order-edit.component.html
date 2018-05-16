@@ -1,0 +1,71 @@
+<!-- TITLE -->
+<mat-card class="mb-40">
+    <h1>Order Edit</h1>
+</mat-card>
+
+<mat-card>
+    <div class="card-title">
+        <mat-icon>edit</mat-icon>
+        Edit
+    </div>
+
+    <form #easyForm="ngForm" class="container-fluid">
+        
+        
+        <mat-form-field class="full-width">
+            <input matInput type="date" placeholder="Date" [ngModel]="item.date | date: 'y-MM-dd'"  (ngModelChange)="item.date = $event" name="date" id="date" required>
+        </mat-form-field>
+        
+        
+        <mat-form-field class="full-width">
+            <input matInput type="text" placeholder="Total" [(ngModel)]="item.total"  name="total" id="total" >
+        </mat-form-field>
+        
+        <!-- RELATIONS -->
+        <h2 class="mb-20">Relations</h2>
+        
+        
+            <div>
+            <label class="mr-10">product</label>
+            <button mat-mini-fab [matMenuTriggerFor]="product" color="primary">
+                <mat-icon>add</mat-icon>            
+                <mat-menu #product="matMenu">
+                    <button mat-menu-item *ngFor="let item of listProduct" [disabled]="containProduct(item._id) ? true : false" href="#" (click)="$event.preventDefault(); containProduct(item._id) || addProduct(item._id)">{{item._id}}</button>
+                </mat-menu>
+            </button>
+        </div>
+        <mat-list>
+            <mat-list-item *ngFor="let obj of item.product; let i = index">    
+                <button mat-icon-button (click)="removeProduct(i)" class="mr-10">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                {{obj}}
+            </mat-list-item>
+            
+            <mat-list-item *ngIf="!item.product || item.product.length == 0">
+                No items found 
+            </mat-list-item>
+        </mat-list>
+        
+        
+        
+        <mat-form-field class="full-width mt-20">
+            <mat-select placeholder="User" class="full-width" #user='ngModel' [(ngModel)]="item.user" name="user" id="user" required>
+                 <mat-option *ngFor="let item of listUser" value="{{item._id}}">
+                   {{item._id}}
+                </mat-option>
+           </mat-select>
+        </mat-form-field>   
+        
+        
+        
+
+
+        <!-- BUTTON BAR -->
+        <div class="mt-40">
+            <button mat-raised-button color="primary" class="pull-right mr-5" (click)="save(easyForm.valid, item)">Save</button>
+            <button mat-raised-button class="pull-right " (click)="goBack()">Back To List</button>
+        </div>
+    </form>
+
+</mat-card>
